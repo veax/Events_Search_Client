@@ -1,0 +1,118 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background: #7474BF;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #348AC7, #7474BF);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #348AC7, #7474BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.header-panel{
+  margin-top: 50px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.App-header h4{
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  line-height: 145%;
+}
+
+.search-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.search-box{
+  position: relative;
+  flex: 0 1 40%;
+}
+
+.search-wrapper input#search{
+  padding: 0 45px 0 0px;
+  color: #fff;
+}
+
+.search-wrapper i.material-icons{
+  position: absolute;
+  top:12px;
+  right:-40px;
+  cursor: pointer;
+}
+
+.EventsList{
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.EventsList .card{
+  flex: 0 1 31%;
+}
+
+.EventsList .card a{  
+  margin-bottom: 15px;
+}
+
+.filter-panel{
+  height: 100px;
+}
+
+a#login{
+  margin-right: 10px;  
+}
+
+
+.event .card-content{
+  max-height:300px;
+  overflow: auto;
+}
+
+
+/*  MEDIA QUERIES*/
+
+@media screen and (max-width: 48em) {
+  .EventsList .card {
+      flex: 0 1 48%;
+  }
+  .header-panel h4{
+    font-size: 25px;
+  }
+  .buttons-panel a{
+    height:45px;
+    line-height: 45px;
+  }
+}
+
+@media screen and (max-width: 35em) {
+  .EventsList .card {
+      flex: 0 1 70%;
+  }
+  .EventsList{
+    justify-content: center;  
+  }
+  .buttons-panel a{
+    height:40px;
+    line-height: 40px;
+    font-size: 14px;
+    padding: 0 25px;
+  }
+}

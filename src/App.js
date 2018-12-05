@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import Navbar from './Navbar';
+import HomePage from './HomePage';
+import loginPage from './loginPage';
+import SignUpPage from './SignUpPage';
+import EventPage from './EventPage';
+
+import 'materialize-css/dist/css/materialize.min.css';
+import './styles/app.sass';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class App extends Component {
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={loginPage} />
+          <Route exact path="/signup" component={SignUpPage} />
+          <Route path="/events/:event_id" component={EventPage} />
+        </div>
+      </Router>
     );
   }
 }
