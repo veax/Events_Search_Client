@@ -23,7 +23,7 @@ export class EventPage extends Component {
       <div className="container">
         <h5>Event Data</h5>
         <p>{this.state.event.nom}</p>
-        <img src={this.state.event.url_internet_1} alt="some text"/>
+        <img src={this.state.event.media_1} alt="some text"/>
       </div>
     )
   }

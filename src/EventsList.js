@@ -8,7 +8,8 @@ class EventsList extends Component {
 
     this.state = {
       events: [],
-      isLoading: true
+      isLoading: true,
+      search: ''
     }
   }
   componentDidMount(){
@@ -21,10 +22,23 @@ class EventsList extends Component {
         events: data,
         isLoading: false  
       }))
-  }
-  render() {
-    const {events, isLoading} = this.state;
 
+
+    let exctractedTypes = (events) => {
+      let extractEventsTypes = new Set();
+      let extractEventsDates = new Set();
+      events.forEach((event) => {
+        extractEventsTypes.add(event.type)
+        extractEventsDates.add(event.lieu)
+      })
+    }
+  }
+
+
+
+  render() {
+
+    const {events, isLoading} = this.state;
     if (isLoading){
       return (
         <div className="container">
@@ -35,19 +49,37 @@ class EventsList extends Component {
         </div>
       )
     }
+
+    let extractEventsTypes = new Set();
+    let extractEventsDates = new Set();
+    events.forEach((event) => {
+      extractEventsTypes.add(event.type)
+      extractEventsDates.add(event.lieu)
+    })
+    console.log(extractEventsTypes)
+    console.log(extractEventsDates)
+    // this.props.onLoad(extractEventsTypes)
+
+
+
+
+    let filteredEvents = events.filter(
+      (event) => {
+        return event.nom.toLowerCase().indexOf(this.props.textFilter.toLowerCase()) !== -1;
+      }
+    )
+
     return (
       <div className="container">
         <div className="EventsList">
-          {events.map((event)=> 
-            <div key = {event.id} className="card hoverable event">
+          {filteredEvents.map((event)=> 
+            <div key = {event.recordid} className="card hoverable event">
               <div className="card-image">
-                {/* <img src={event.imageUrl} alt="some text"/> */}
-                <img src={event.url_internet_1} alt="some text"/>
+                <div className="event-img"style={{backgroundImage:`url(${event.media_1})`}}></div>
                 <span className="card-title">{event.nom}</span>
               </div>
               <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
-              <Link to={{pathname: '/events/' + event.id, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
-              {/* <a className="waves-effect waves-light btn-small deep-purple accent-2">See more</a> */}
+              <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
             </div>
           )} 
         </div>

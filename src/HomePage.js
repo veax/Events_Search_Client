@@ -1,23 +1,38 @@
 import React, { Component } from 'react'
-import EventsList from './EventsList';
-import { Link } from 'react-router-dom';
+import SearchEventBar from './SearchEventBar'
+import EventsList from './EventsList'
 
 export class HomePage extends Component {
-  render() {
-    return (
-        <div>
-            <div className="container">
-                <div className="search-wrapper center">
-                    <div className="search-box">
-                    <input type="text" placeholder="search for events..." id="search"/>
-                    <i className="material-icons">search</i>
-                    </div>
-                </div>
+    constructor(){
+        super()
+        this.state = {
+            searchText: '',
+            eventsTypes: [],    // have to be sets to exclude repeating values
+            eventsDates: []
+        };
+    }
+
+    handleTextFilter = (textValue) => {
+        this.setState({
+            searchText: textValue
+        })
+    }
+
+    handleSelectedTypes = (eventType) => {
+        this.setState(prevState => ({
+            eventsTypes: [...prevState.eventsTypes, eventType]
+        }))
+    }
+    
+
+    render() {
+        return (
+            <div>
+                <SearchEventBar onChangeTextFilter = {this.handleTextFilter} />
+                <EventsList textFilter={this.state.searchText} onLoad={this.handleSelectedTypes}/>
             </div>
-            <EventsList/>
-        </div>
-    )
-  }
+        )
+    }
 }
 
 export default HomePage

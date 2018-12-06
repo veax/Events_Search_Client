@@ -11,11 +11,9 @@ class SignUpPage extends Component {
                         <span className="card-title">Enter login details</span>
                         <div className="row">
                         <div className="input-field col s12">
-                            <label for="text">User ID</label>
                             <input type="text" className="validate" name="uid" id="userid" />
                         </div>
                         <div className="input-field col s12">
-                            <label for="password">Password </label>
                             <input type="password" className="validate" name="pwd" id="password" />
                         </div>
                         </div>

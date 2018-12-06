@@ -8,7 +8,7 @@ import EventPage from './EventPage';
 
 import 'materialize-css/dist/css/materialize.min.css';
 import './styles/app.sass';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
 

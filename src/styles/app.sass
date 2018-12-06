@@ -40,26 +40,24 @@
   align-items: center
   margin-top: 40px
   margin-bottom: 20px
-
-.search-box
-  position: relative
-  flex: 0 1 40%
-
-.search-wrapper
   input#search
     padding: 0 45px 0 0px
-    color: #fff
+    color: #000
   i.material-icons
     position: absolute
     top: 12px
     right: -40px
     cursor: pointer
 
+.search-box
+  position: relative
+  flex: 0 1 40%  
+
 .EventsList
   margin-top: 20px
   display: flex
   flex-wrap: wrap
-  justify-content: space-between
+  justify-content: space-around
   .card
     flex: 0 1 31%
     a
@@ -74,6 +72,32 @@ a#login
 .event .card-content
   max-height: 300px
   overflow: auto
+
+.card .card-image
+  .event-img 
+    position: relative
+    height: 300px
+    &:before
+      content: ''
+      position: absolute
+      top: 0
+      right: 0
+      left: 0
+      bottom: 0
+      background: rgba(0,0,0,0.4)
+  span 
+    position: relative
+
+
+// Filter Options
+.filter_options
+  padding: 15px 0
+
+.advanced_filters_form  
+  display: flex
+  justify-content: center
+  span 
+    margin-right: 15px
 
 //  MEDIA QUERIES
 
