@@ -1,3 +1,9 @@
+Possible problem: events.js:183
+      throw er; // Unhandled 'error' event
+      
+ Solution: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
