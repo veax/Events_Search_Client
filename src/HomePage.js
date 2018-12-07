@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import SearchEventBar from './SearchEventBar'
+import SearchEventBar from './HeaderComponents/SearchEventBar'
 import EventsList from './EventsList'
 
 export class HomePage extends Component {
-    constructor(){
-        super()
-        this.state = {
-            searchText: '',
-            eventsTypes: [],    // have to be sets to exclude repeating values
-            eventsDates: []
-        };
-    }
+
+    state = {
+        searchText: '',
+        eventsTypes: [],    // have to be sets to exclude repeating values
+        eventsDates: []
+    };
 
     handleTextFilter = (textValue) => {
         this.setState({

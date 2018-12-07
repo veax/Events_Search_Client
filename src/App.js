@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Navbar from './Navbar';
+import Navbar from './HeaderComponents/Navbar';
 import HomePage from './HomePage';
-import loginPage from './loginPage';
-import SignUpPage from './SignUpPage';
+import loginPage from './HeaderComponents/loginPage';
+import SignUpPage from './HeaderComponents/SignUpPage';
 import EventPage from './EventPage';
 
 import 'materialize-css/dist/css/materialize.min.css';

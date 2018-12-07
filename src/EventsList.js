@@ -3,15 +3,11 @@ import { Link } from 'react-router-dom';
 
 
 class EventsList extends Component {
-  constructor(props){
-    super(props);
-
-    this.state = {
-      events: [],
-      isLoading: true,
-      search: ''
-    }
+  state = {
+    events: [],
+    isLoading: true
   }
+
   componentDidMount(){
     this.setState({
       isLoading: true
@@ -21,24 +17,25 @@ class EventsList extends Component {
       .then(data => this.setState({
         events: data,
         isLoading: false  
-      }))
+    }))
 
 
-    let exctractedTypes = (events) => {
-      let extractEventsTypes = new Set();
-      let extractEventsDates = new Set();
-      events.forEach((event) => {
-        extractEventsTypes.add(event.type)
-        extractEventsDates.add(event.lieu)
-      })
-    }
+    // let exctractedTypes = (events) => {
+    //   let extractEventsTypes = new Set();
+    //   let extractEventsDates = new Set();
+    //   events.forEach((event) => {
+    //     extractEventsTypes.add(event.type)
+    //     extractEventsDates.add(event.lieu)
+    //   })
+    //   console.log(extractEventsTypes)
+    // this.props.onLoad(extractEventsTypes)
+    // }
   }
 
 
 
   render() {
-
-    const {events, isLoading} = this.state;
+    const { events, isLoading } = this.state;
     if (isLoading){
       return (
         <div className="container">
@@ -49,19 +46,7 @@ class EventsList extends Component {
         </div>
       )
     }
-
-    let extractEventsTypes = new Set();
-    let extractEventsDates = new Set();
-    events.forEach((event) => {
-      extractEventsTypes.add(event.type)
-      extractEventsDates.add(event.lieu)
-    })
-    console.log(extractEventsTypes)
-    console.log(extractEventsDates)
-    // this.props.onLoad(extractEventsTypes)
-
-
-
+    
 
     let filteredEvents = events.filter(
       (event) => {
@@ -69,19 +54,23 @@ class EventsList extends Component {
       }
     )
 
+    const eventsList = filteredEvents.map(event => {
+      return (
+        <div key={event.recordid} className="card hoverable event">
+          <div className="card-image">
+            <div className="event-img"style={{backgroundImage:`url(${event.media_1})`}}></div>
+            <span className="card-title">{event.nom}</span>
+          </div>
+          <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
+          <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
+        </div>
+      )
+    })
+
     return (
       <div className="container">
         <div className="EventsList">
-          {filteredEvents.map((event)=> 
-            <div key = {event.recordid} className="card hoverable event">
-              <div className="card-image">
-                <div className="event-img"style={{backgroundImage:`url(${event.media_1})`}}></div>
-                <span className="card-title">{event.nom}</span>
-              </div>
-              <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
-              <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
-            </div>
-          )} 
+          { eventsList }
         </div>
       </div>
     );

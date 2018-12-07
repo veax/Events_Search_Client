@@ -3,26 +3,20 @@ import React, { Component } from 'react'
 class loginPage extends Component {
 
     state = {
-        loginInput: '',
-        passInput: ''
+        userid: '',
+        password: ''
     }
 
-    handleloginInput = (e) => {
+    handleChange = (e) => {
         this.setState({
-            loginInput: e.target.value
-        })
-    }
-
-    handlepassInput = (e) => {
-        this.setState({
-            passInput: e.target.value
+            [e.target.id]: e.target.value
         })
     }
 
     handleReset = () => {
         this.setState({
-            loginInput: '',
-            passInput: ''
+            userid: '',
+            password: ''
         })
     }
 
@@ -50,10 +44,10 @@ class loginPage extends Component {
                         <span className="card-title">Enter login details</span>
                         <div className="row">
                         <div className="input-field col s12">
-                            <input type="text" value={this.state.loginInput} onChange = {this.handleloginInput.bind(this)} className="validate" name="uid" id="userid" placeholder="login"/>
+                            <input type="text" value={this.state.loginInput} onChange = {this.handleChange} className="validate" name="uid" id="userid" placeholder="login"/>
                         </div>
                         <div className="input-field col s12">
-                            <input type="password" value={this.state.passInput} onChange = {this.handlepassInput.bind(this)}className="validate" name="pwd" id="password" placeholder="password" />
+                            <input type="password" value={this.state.passInput} onChange = {this.handleChange} className="validate" name="pwd" id="password" placeholder="password" />
                         </div>
                         </div>
                     </div>
