@@ -1,25 +1,39 @@
 import React, { Component } from 'react'
 import SearchEventBar from './HeaderComponents/SearchEventBar'
+import AdvancedSearch from './HeaderComponents/AdvancedSearch'
 import EventsList from './EventsList'
 
 export class HomePage extends Component {
 
     state = {
-        searchText: '',
+        filter:'',
         eventsTypes: [],    // have to be sets to exclude repeating values
-        eventsDates: []
+        eventsDates: [],
+        search:''
     };
 
     handleTextFilter = (textValue) => {
         this.setState({
-            searchText: textValue
+            search: textValue,
+            filter:'text'
         })
     }
 
-    handleSelectedTypes = (eventType) => {
+    handleSelectedTypes = (eventType, eventDate) => {
         this.setState(prevState => ({
-            eventsTypes: [...prevState.eventsTypes, eventType]
+            // eventsTypes: [...prevState.eventsTypes, eventType],
+            // eventsDates: [...prevState.eventsDates, eventDate],
+            eventsTypes: eventType,
+            eventsDates: eventDate
         }))
+    }
+
+    handleSelectChange = (value, filter) => {
+        console.log('home', value, ':', filter)
+        this.setState({
+            search: value,
+            filter
+        })
     }
     
 
@@ -27,7 +41,8 @@ export class HomePage extends Component {
         return (
             <div>
                 <SearchEventBar onChangeTextFilter = {this.handleTextFilter} />
-                <EventsList textFilter={this.state.searchText} onLoad={this.handleSelectedTypes}/>
+                <AdvancedSearch types={this.state.eventsTypes} dates={this.state.eventsDates} handleSelectChange={this.handleSelectChange}/>
+                <EventsList search={this.state.search} handleSelectedTypes={this.handleSelectedTypes} filter={this.state.filter}/>
             </div>
         )
     }

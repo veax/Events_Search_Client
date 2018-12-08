@@ -21,17 +21,21 @@ class loginPage extends Component {
     }
 
     handleSubmit = (e) => {
+        // console.log(this.props)
         e.preventDefault();
         let user = document.getElementById('userid').value;
         let password = document.getElementById('password').value;
 
-        fetch('http://localhost:8080/inscription', {
-                method: 'POST',
-                headers : new Headers(),
-                body:JSON.stringify({login:user, password:password})
-            }).then((res) => res.json())
-            .then((data) =>  console.log(data))
-            .catch((err)=>console.log(err))
+        // fetch('http://localhost:8080/login', {
+        //         method: 'POST',
+        //         headers : new Headers(),
+        //         body:JSON.stringify({login:user, password:password})
+        //     }).then((res) => res.json())
+        //     .then((data) =>  console.log(data))
+        //     .catch((err)=>console.log(err))
+        //     .then(() => {
+        //         this.props.history.push('/')
+        //     })
     }
 
   render() {
@@ -53,7 +57,7 @@ class loginPage extends Component {
                     </div>
                     <div className="card-action right-align">
                         <input type="reset" id="reset" className="btn-flat grey-text waves-effect" onClick={this.handleReset}/>
-                        <input type="submit" className="btn teal waves-effect waves-light" value="Send POST" />
+                        <input type="submit" className="btn teal waves-effect waves-light" value="Enter as user" />
                     </div>
                 </form>
             </div>
