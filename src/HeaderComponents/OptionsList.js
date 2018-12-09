@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import geolocation from '../helperFunctions/geolocation'
-
+import { getCurrentPosition } from '../helperFunctions/geolocation'
 
 class OptionsList extends Component {
     state = {
         valueType: '',
-        valueLocation:''
+        valueLocation:'5',  // 5 is default value
     }
 
     changeType = (e) => {
@@ -23,42 +22,46 @@ class OptionsList extends Component {
 
     handleLocSubmit = (e) => {
         e.preventDefault()
-        geolocation()
-        const lat = null
-        const long = null
-        const radius = this.state.valueLocation
-        fetch('http://localhost:8080/eventsByLocation', {
-                method: 'POST',
-                headers : new Headers(),
-                body:JSON.stringify({latitude: lat, longitude: long, radius})
-            }).then((res) => res.json())
-            .then((data) =>  console.log(data))
-            .catch((err)=>console.log(err))
+        getCurrentPosition().then(position => {
+            const { latitude, longitude } = position.coords
+            const radius = this.state.valueLocation
+            const coords = [latitude, longitude, radius]
+            this.props.handleSelectChange(coords)
+            // fetch('http://localhost:8080/eventsByLocation', {
+            //     method: 'POST',
+            //     headers : new Headers(),
+            //     body:JSON.stringify({latitude, longitude, radius})
+            // }).then((res) => res.json())
+            // .then((data) =>  {
+                // this.setState({
+                //     eventsResultLoc: data
+                // })
+            //     this.props.loadEventsLoc(data)
+            // })
+            // .catch((err)=>console.log(err))
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     render() {
-    const { selectedOption } = this.props
-    if (selectedOption === ''){
-        return null
-    }
-    else if (selectedOption !== 'location'){
-        // console.log(this.state.valueType)
-        const values = this.props[selectedOption]
-        const list = values.map(option => {
+        const { selectedOption } = this.props
+        if (selectedOption !== 'location'){
+            const values = this.props[selectedOption]
+            const list = values.map(option => {
+                return (
+                    <option key={`${option}`}>{option}</option>
+                )  
+            })
             return (
-                <option key={`${option}`}>{option}</option>
-            )  
-        })
-        return (
-            <div className="input-field col s6">
-                <select name="events" onChange={this.changeType} value={this.state.valueType}>
-                    {list}
-                </select>
-            </div>
-        )
-    }
-    else{
-        // console.log(this.state.valueLocation)
+                <div className="input-field col s6">
+                    <select name="events" onChange={this.changeType} value={this.state.valueType}>
+                        {list}
+                    </select>
+                </div>
+            )
+        }
         return (
             <div className="input-field col s6">
                 <p>Events near by your position: </p>
@@ -69,12 +72,9 @@ class OptionsList extends Component {
                         <option value="15">15km</option>
                     </select>
                     <input type="submit" value="submit" className="btn teal waves-effect waves-light" id="locationSubmit"/>
-                </form>
-                
+                </form>    
             </div>
         )
-    }
-    
   }
 }
 

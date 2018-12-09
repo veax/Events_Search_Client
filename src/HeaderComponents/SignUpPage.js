@@ -21,7 +21,6 @@ class SignUpPage extends Component {
     }
 
     handleSubmit = (e) => {
-        // console.log(this.props)
         e.preventDefault();
         let user = document.getElementById('userid').value;
         let password = document.getElementById('password').value;
@@ -31,7 +30,9 @@ class SignUpPage extends Component {
                 headers : new Headers(),
                 body:JSON.stringify({login:user, password:password})
             }).then((res) => res.json())
-            .then((data) =>  console.log(data))
+            .then((data) =>  {
+                console.log(data)
+            })
             .catch((err)=>console.log(err))
             .then(() => {
                 this.props.history.push('/')

@@ -21,21 +21,23 @@ class loginPage extends Component {
     }
 
     handleSubmit = (e) => {
-        // console.log(this.props)
         e.preventDefault();
         let user = document.getElementById('userid').value;
         let password = document.getElementById('password').value;
 
-        // fetch('http://localhost:8080/login', {
-        //         method: 'POST',
-        //         headers : new Headers(),
-        //         body:JSON.stringify({login:user, password:password})
-        //     }).then((res) => res.json())
-        //     .then((data) =>  console.log(data))
-        //     .catch((err)=>console.log(err))
-        //     .then(() => {
-        //         this.props.history.push('/')
-        //     })
+        fetch('http://localhost:8080/inscription', {
+                method: 'POST',
+                headers : new Headers(),
+                body:JSON.stringify({login:user, password:password})
+            }).then((res) => res.json())
+            .then((data) =>  {
+                console.log(data)
+                this.props.location.handleConnection(data)
+            })
+            .catch((err)=>console.log(err))
+            .then(() => {
+                this.props.history.push('/')
+            })
     }
 
   render() {

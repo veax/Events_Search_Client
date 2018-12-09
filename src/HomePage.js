@@ -9,27 +9,15 @@ export class HomePage extends Component {
         filter:'',
         eventsTypes: [],    // have to be sets to exclude repeating values
         eventsDates: [],
-        search:''
+        search: []
     };
-
-    handleTextFilter = (textValue) => {
-        this.setState({
-            search: textValue,
-            filter:'text'
-        })
-    }
-
     handleSelectedTypes = (eventType, eventDate) => {
-        this.setState(prevState => ({
-            // eventsTypes: [...prevState.eventsTypes, eventType],
-            // eventsDates: [...prevState.eventsDates, eventDate],
+        this.setState( () => ({
             eventsTypes: eventType,
             eventsDates: eventDate
         }))
     }
-
     handleSelectChange = (value, filter) => {
-        console.log('home', value, ':', filter)
         this.setState({
             search: value,
             filter
@@ -40,9 +28,9 @@ export class HomePage extends Component {
     render() {
         return (
             <div>
-                <SearchEventBar onChangeTextFilter = {this.handleTextFilter} />
-                <AdvancedSearch types={this.state.eventsTypes} dates={this.state.eventsDates} handleSelectChange={this.handleSelectChange}/>
-                <EventsList search={this.state.search} handleSelectedTypes={this.handleSelectedTypes} filter={this.state.filter}/>
+                <SearchEventBar onChangeTextFilter = {this.handleSelectChange} />
+                <AdvancedSearch types={this.state.eventsTypes} dates={this.state.eventsDates} handleSelectChange={this.handleSelectChange} loadEventsLoc={this.loadEventsLoc}/>
+                <EventsList search={this.state.search} handleSelectedTypes={this.handleSelectedTypes} filter={this.state.filter} />
             </div>
         )
     }

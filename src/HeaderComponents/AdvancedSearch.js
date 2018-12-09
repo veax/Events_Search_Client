@@ -17,32 +17,35 @@ export class AdvancedSearch extends Component {
     this.props.handleSelectChange(value, this.state.selectedOption)
   }
 
+
   render() {
     const { dates, types } = this.props
+    const typesName = ['date', 'type', 'location']
+    const name = ['By date', 'By type of event', 'By location']
+
+    const checkBoxForm = typesName.map((type, i) => {
+      return (
+        <p key={i}>
+          <label>
+            <input name="group1" type="radio" value={type}  onChange={this.handleOptionChange} />
+            <span>{name[i]}</span>
+          </label>
+        </p>
+      )
+    })
+
+    let options = null
+    if (this.state.selectedOption){
+      options = <OptionsList selectedOption={this.state.selectedOption} date={dates} type={types} handleSelectChange={this.handleSelectChange} />
+    }
+
     return (
       <div className="filter_options container">
         <p>or use advanced filters instead: </p>
         <form action="#" className="advanced_filters_form">
-            <p>
-            <label>
-                <input name="group1" type="radio" value='dates' checked={this.state.selectedOption === 'dates'} onChange={this.handleOptionChange} />
-                <span>By date</span>
-            </label>
-            </p>
-            <p>
-            <label>
-                <input name="group1" type="radio" value='types' checked={this.state.selectedOption === 'types'} onChange={this.handleOptionChange} />
-                <span>By type of event</span>
-            </label>
-            </p>
-            <p>
-            <label>
-                <input name="group1" type="radio" value='location' checked={this.state.selectedOption === 'location'} onChange={this.handleOptionChange} />
-                <span>By location</span>
-            </label>
-            </p>
+            {checkBoxForm}
         </form>
-        <OptionsList selectedOption={this.state.selectedOption} dates={dates} types={types} handleSelectChange={this.handleSelectChange}/>
+        {options}
       </div>
     )
   }

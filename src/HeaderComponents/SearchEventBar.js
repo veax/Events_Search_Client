@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 class SearchEventBar extends Component {
     render(){
         const updateSearch = (e) => {
-            this.props.onChangeTextFilter(e.target.value)
+            this.props.onChangeTextFilter(e.target.value, 'text')
         }
         return (
             <div className="container">

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import { exctractEventsData, types, dates } from './helperFunctions/exctractEventsData'
 
 class EventsList extends Component {
   state = {
@@ -19,31 +19,38 @@ class EventsList extends Component {
         events: data,
         isLoading: false
       })
-      exctractEventsData(data) 
+      exctractEventsData(data)
+      this.props.handleSelectedTypes(types, dates)
     }
     fetchEvents()
+  }
 
-    const exctractEventsData = (events) => {
-      let eventsTypes = new Set();
-      let eventsDates = new Set();
-      events.forEach((event) => {
-        event.type = event.type.replace(/,*$/,"") // remove ,,, in the end of types
-        eventsTypes.add(event.type)
-        eventsDates.add(event.date)
+  componentWillReceiveProps(nextProps){
+    if (nextProps.filter === 'location'){
+      const { search } = nextProps
+      const lat = search[0]
+      const long = search[1]
+      const rad = search[2]
+      fetch('http://localhost:8080/eventsByLocation', {
+        method: 'POST',
+        headers : new Headers(),
+        body:JSON.stringify({latitude: lat, longitude: long, radius: rad})
+      }).then((res) => res.json())
+      .then((data) =>  {
+        console.log(data)
+        // this.setState({
+        //     events: data
+        // })
       })
-      const val = [...eventsTypes]
-      const val2 = [...eventsDates]
-      // this.props.handleSelectedTypes(eventsTypes, eventsDates)
-      this.props.handleSelectedTypes(val, val2)
+      .catch((err)=>console.log(err))
     }
-
   }
 
   
-
-
   render() {
-    const { events, isLoading } = this.state;
+    const { events, isLoading } = this.state
+    const { filter, search } = this.props
+    let filteredEvents, type
     if (isLoading){
       return (
         <div className="container">
@@ -54,33 +61,27 @@ class EventsList extends Component {
         </div>
       )
     }
-    let filteredEvents
-    if (this.props.filter === 'text'){
+
+    if (filter === 'text'){
       filteredEvents = events.filter(
         (event) => {
-          return event.nom.toLowerCase().indexOf(this.props.search.toLowerCase()) !== -1;
+          return event.nom.toLowerCase().indexOf(search.toLowerCase()) !== -1;
         }
       )
     }
-    // let type = this.props.filter.slice(0, -1)
-    else if (this.props.filter === 'dates'){
-      filteredEvents = events.filter(
-        (event) => {
-          return event.date.indexOf(this.props.search) !== -1;
-        }
-      )
+    else if (filter === 'location'){
+      filteredEvents = events
     }
     else {
+      filter === 'date'? type = 'date' : type='type'
       filteredEvents = events.filter(
         (event) => {
-          return event.type.indexOf(this.props.search) !== -1;
+          return event[type].indexOf(search) !== -1;
         }
       )
     }
-    let eventsList;
-    if (filteredEvents.length > 0){
-      eventsList = filteredEvents.map(event => {
-        return (
+    let eventsList = filteredEvents.map(event => {
+        return filteredEvents.length > 0 ? (
           <div key={event.recordid} className="card hoverable event">
             <div className="card-image">
               <div className="event-img"style={{backgroundImage:`url(${event.media_1})`}}></div>
@@ -89,18 +90,8 @@ class EventsList extends Component {
             <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
             <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
           </div>
-        )
-      })
-    }
-    else {
-      return (
-        <div className="container">
-          <div className="EventsList">
-            No events available
-          </div>
-        </div>
-      );
-    }
+        ): null
+    })
     return (
       <div className="container">
         <div className="EventsList">
