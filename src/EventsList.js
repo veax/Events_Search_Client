@@ -38,9 +38,9 @@ class EventsList extends Component {
       }).then((res) => res.json())
       .then((data) =>  {
         console.log(data)
-        // this.setState({
-        //     events: data
-        // })
+        this.setState({
+            events: data
+        })
       })
       .catch((err)=>console.log(err))
     }
@@ -80,11 +80,18 @@ class EventsList extends Component {
         }
       )
     }
+
+    // -----DEBUG events key repetition
+    // filteredEvents.forEach(event => {
+    //   console.log(event.recordid)
+    // })
+    // console.log(filteredEvents.length)
+
     let eventsList = filteredEvents.map(event => {
         return filteredEvents.length > 0 ? (
           <div key={event.recordid} className="card hoverable event">
             <div className="card-image">
-              <div className="event-img"style={{backgroundImage:`url(${event.media_1})`}}></div>
+              <div className="event-img" style={{backgroundImage:`url(${event.media_1})`}}></div>
               <span className="card-title">{event.nom}</span>
             </div>
             <div className="card-content">{`${event.description.substring(0,150)}... `}</div>

@@ -13,7 +13,6 @@ class Navbar extends Component {
         isConnected: res.success
       })
   }
-
   render(){
     const links = this.state.isConnected ? <SignedOutLinks handleConnection={this.handleConnection}/> : <SignedInLinks handleConnection={this.handleConnection}/> 
     return (

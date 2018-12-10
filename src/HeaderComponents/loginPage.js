@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
+import FormErrors from './FormErrors'
 
 class loginPage extends Component {
 
     state = {
         userid: '',
-        password: ''
+        password: '',
+        formErrors: {userid:'', password:''},
+        useridValid: false,
+        passwordValid: false,
+        fomdValid: false
     }
 
     handleChange = (e) => {
         this.setState({
-            [e.target.id]: e.target.value
+            [e.target.id]: e.target.value,
+            
         })
     }
 
@@ -48,6 +54,7 @@ class loginPage extends Component {
                 <form action="/" method="POST" id="loginForm" onSubmit={this.handleSubmit}>
                     <div className="card-content">
                         <span className="card-title">Enter login details</span>
+                        <FormErrors formErrors={this.state.formErrors} />
                         <div className="row">
                         <div className="input-field col s12">
                             <input type="text" value={this.state.loginInput} onChange = {this.handleChange} className="validate" name="uid" id="userid" placeholder="login"/>

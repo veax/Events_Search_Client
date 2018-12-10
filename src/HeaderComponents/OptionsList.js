@@ -3,9 +3,21 @@ import { getCurrentPosition } from '../helperFunctions/geolocation'
 
 class OptionsList extends Component {
     state = {
+        // valueType: this.props[this.props.selectedOption][0],   type by default on first loading  
         valueType: '',
-        valueLocation:'5',  // 5 is default value
+        valueLocation:'0.5',  // 5 is default value
+        // list: this.props[this.props.selectedOption]
     }
+    // componentWillReceiveProps(nextProps){   // to update default valueType on changing checkbox
+    //     const { selectedOption } = nextProps
+    //     if (selectedOption !== 'location' && selectedOption !== this.props.selectedOption){
+    //         this.setState({
+    //             valueType: nextProps[nextProps.selectedOption][0],
+    //             list: nextProps[nextProps.selectedOption]
+    //         })
+    //     }
+    //     this.props.handleSelectChange('')
+    // }
 
     changeType = (e) => {
         this.setState({
@@ -27,18 +39,6 @@ class OptionsList extends Component {
             const radius = this.state.valueLocation
             const coords = [latitude, longitude, radius]
             this.props.handleSelectChange(coords)
-            // fetch('http://localhost:8080/eventsByLocation', {
-            //     method: 'POST',
-            //     headers : new Headers(),
-            //     body:JSON.stringify({latitude, longitude, radius})
-            // }).then((res) => res.json())
-            // .then((data) =>  {
-                // this.setState({
-                //     eventsResultLoc: data
-                // })
-            //     this.props.loadEventsLoc(data)
-            // })
-            // .catch((err)=>console.log(err))
         })
         .catch(err => {
             console.log(err)
@@ -47,9 +47,9 @@ class OptionsList extends Component {
 
     render() {
         const { selectedOption } = this.props
+        const events = this.props[this.props.selectedOption]
         if (selectedOption !== 'location'){
-            const values = this.props[selectedOption]
-            const list = values.map(option => {
+            const list = events.map(option => {
                 return (
                     <option key={`${option}`}>{option}</option>
                 )  
@@ -67,6 +67,8 @@ class OptionsList extends Component {
                 <p>Events near by your position: </p>
                 <form onSubmit={this.handleLocSubmit}>
                     <select name="events" onChange={this.changeLoc} value={this.state.valueLocation}>
+                        <option value="0.5">500m</option>
+                        <option value="1">1km</option>
                         <option value="5">5km</option>
                         <option value="10">10km</option>
                         <option value="15">15km</option>
