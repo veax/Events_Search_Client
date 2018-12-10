@@ -52,6 +52,7 @@
 .search-box
   position: relative
   flex: 0 1 40%  
+  margin-left: -40px
 
 .EventsList
   margin-top: 20px
@@ -99,7 +100,6 @@ a#login
   span 
     margin-right: 15px
 
-
 select 
   display: block
   width: 50%
@@ -107,6 +107,7 @@ select
 
 #locationSubmit
   margin-top: 10px
+
 
 //  MEDIA QUERIES
 
@@ -129,3 +130,13 @@ select
     line-height: 40px
     font-size: 14px
     padding: 0 25px
+
+@media screen and (max-width: 30em)
+  .header-panel
+    display: block
+  .search-box
+    flex: 0 1 55%
+  .advanced_filters_form
+    display: block
+    text-align: left
+    margin-left: calc(40% - 40px)
