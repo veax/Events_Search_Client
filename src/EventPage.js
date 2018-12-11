@@ -34,7 +34,13 @@ export default class EventPage extends Component
       fetchEvent( this.props.match.params.event_id )
 			.then( event => this.setState( { event } ) )
     }
-	}
+  }
+  
+
+  handleStarChange = () => {
+
+  }
+
 
 	render()
 	{
@@ -46,11 +52,19 @@ export default class EventPage extends Component
     else {
       image = <img src={noimagefound} alt="not found"/>
     }
+
+    const stars = () => {
+      let stars_array = []
+      for (let i = 0; i < 5; i++){
+        stars_array.push(<i key={i} onChange={this.handleStarChange} className="material-icons small">grade</i>)
+      }
+      return stars_array
+    }
+
 		return (
       <div className="container">
         <div className="card event_container">
-          <span class="card-title">{ event.nom }</span>
-          {/* <h4>{ event.nom }</h4> */}
+          <span className="card-title">{ event.nom }</span>
           <blockquote>{ event.description }</blockquote>
           <div className="row">
             <div className="col s6">
@@ -59,11 +73,7 @@ export default class EventPage extends Component
             <div className="col s6">
               <h6>some stairs to note event</h6>
               <div className="stars_container">
-                <i class="material-icons small">grade</i>
-                <i class="material-icons small">grade</i>
-                <i class="material-icons small">grade</i>
-                <i class="material-icons small">grade</i>
-                <i class="material-icons small">grade</i>
+                {stars()}
               </div>
             </div>
           </div>
@@ -71,38 +81,37 @@ export default class EventPage extends Component
             <div className="comment_section col s6">
               <h5>Comments: </h5>
                 <ul className="collection">
-                  <li class="collection-item avatar">
-                    <img src={user_icon} alt="" class="circle" />
-                    <span class="title">Username</span>
+                  <li className="collection-item avatar">
+                    <img src={user_icon} alt="" className="circle" />
+                    <span className="title">Username</span>
                     <p>First Line </p>
                     <div className="divider"></div>
-                    <li className="collection_item comment">User Comment</li>
+                    <div className="collection_item comment">User Comment</div>
                   </li>
-                  <li class="collection-item avatar">
-                    <img src={user_icon} alt="" class="circle" />
-                    <span class="title">Username</span>
+                  <li className="collection-item avatar">
+                    <img src={user_icon} alt="" className="circle" />
+                    <span className="title">Username</span>
                     <p>First Line </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
                     <div className="divider"></div>
-                    <li className="collection_item comment">User Comment</li>
+                    <div className="collection_item comment">User Comment</div>
                   </li>
-                  <li class="collection-item avatar">
-                    <img src={user_icon} alt="" class="circle" />
-                    <span class="title">Username</span>
+                  <li className="collection-item avatar">
+                    <img src={user_icon} alt="" className="circle" />
+                    <span className="title">Username</span>
                     <p>First Line </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
                     <div className="divider"></div>
-                    <li className="collection_item comment">User Comment</li>
+                    <div className="collection_item comment">User Comment</div>
                   </li>
                 </ul>
             </div>
             <div className="col s6">
-              <label for="textarea1">Write your thoughts about it...</label>
-              <textarea id="textarea1" class="materialize-textarea"></textarea>
-              <a class="waves-effect waves-light btn add_comment_btn">add new comment</a>
+              <label htmlFor="textarea1">Write your thoughts about it...</label>
+              <textarea id="textarea1" className="materialize-textarea" placeholder="leave your honest opinion"></textarea>
+              <a className="waves-effect waves-light btn add_comment_btn">add new comment</a>
             </div>
-          </div>
-          
+          </div> 
         </div>   
       </div>)
 	}

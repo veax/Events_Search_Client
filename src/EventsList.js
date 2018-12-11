@@ -90,10 +90,10 @@ class EventsList extends Component {
     }
 
     // -----DEBUG events key repetition
-    // filteredEvents.forEach(event => {
-    //   console.log(event.recordid)
-    // })
-    // console.log(filteredEvents.length)
+    filteredEvents.forEach(event => {
+      console.log(event.recordid)
+    })
+    console.log(filteredEvents.length)
 
     let eventsList = filteredEvents.map(event => {
       let image
