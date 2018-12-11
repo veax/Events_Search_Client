@@ -9,6 +9,7 @@ class Navbar extends Component {
   }
 
   handleConnection = (res) => {
+      console.log(res) // for debug
       this.setState({
         isConnected: res.success
       })

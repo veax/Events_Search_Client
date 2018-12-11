@@ -61,7 +61,6 @@ class loginPage extends Component {
                 body:JSON.stringify({login:user, password:password})
             }).then((res) => res.json())
             .then((data) =>  {
-                console.log(data)
                 this.props.location.handleConnection(data)
             })
             .catch((err)=>console.log(err))
@@ -75,7 +74,7 @@ class loginPage extends Component {
       <div className="section section-login">
         <div className="valign-wrapper row login-box">
             <div className="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
-                <form action="/" method="POST" id="loginForm" onSubmit={this.handleSubmit} autocomplete="off">
+                <form action="/" method="POST" id="loginForm" onSubmit={this.handleSubmit} autoComplete="off">
                     <div className="card-content">
                         <span className="card-title">Enter login details</span>
                         <div className="row">

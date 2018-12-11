@@ -62,7 +62,6 @@ class SignUpPage extends Component {
             }).then((res) => res.json())
             .then((data) =>  {
                 console.log(data)
-                this.props.location.handleConnection(data)
             })
             .catch((err)=>console.log(err))
             .then(() => {
@@ -75,7 +74,7 @@ class SignUpPage extends Component {
       <div className="section section-login">
         <div className="valign-wrapper row login-box">
             <div className="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
-                <form action="/" method="POST" id="signupForm" onSubmit={this.handleSubmit} autocomplete="off">
+                <form action="/" method="POST" id="signupForm" onSubmit={this.handleSubmit} autoComplete="off">
                     <div className="card-content">
                         <span className="card-title">Welcome! Here you can create a new account</span>
                         <div className="row">

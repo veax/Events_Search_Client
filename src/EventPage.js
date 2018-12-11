@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import noimagefound from './assets/noimagefound.png'
+import user_icon from './assets/user_icon.jpg'
 
 
 const fetchEvent = async id =>
@@ -45,10 +46,61 @@ export default class EventPage extends Component
     else {
       image = <img src={noimagefound} alt="not found"/>
     }
-		return <div className="container">
-			<h5>Event Data</h5>
-			<p>{ event.nom }</p>
-			{image}
-		</div>
+		return (
+      <div className="container">
+        <div className="card event_container">
+          <span class="card-title">{ event.nom }</span>
+          {/* <h4>{ event.nom }</h4> */}
+          <blockquote>{ event.description }</blockquote>
+          <div className="row">
+            <div className="col s6">
+              {image}
+            </div>
+            <div className="col s6">
+              <h6>some stairs to note event</h6>
+              <div className="stars_container">
+                <i class="material-icons small">grade</i>
+                <i class="material-icons small">grade</i>
+                <i class="material-icons small">grade</i>
+                <i class="material-icons small">grade</i>
+                <i class="material-icons small">grade</i>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="comment_section col s7">
+              <h5>Comments: </h5>
+                <ul className="collection">
+
+                  <li class="collection-item avatar">
+                    <img src={user_icon} alt="" class="circle" />
+                    <span class="title">Username</span>
+                    <p>First Line </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <div className="divider"></div>
+                    <li className="collection_item comment">User Comment</li>
+                  </li>
+                  <li class="collection-item avatar">
+                    <img src={user_icon} alt="" class="circle" />
+                    <span class="title">Username</span>
+                    <p>First Line </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <div className="divider"></div>
+                    <li className="collection_item comment">User Comment</li>
+                  </li>
+                  <li class="collection-item avatar">
+                    <img src={user_icon} alt="" class="circle" />
+                    <span class="title">Username</span>
+                    <p>First Line </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <div className="divider"></div>
+                    <li className="collection_item comment">User Comment</li>
+                  </li>
+                </ul>
+            </div>
+          </div>
+          
+        </div>   
+      </div>)
 	}
 }
