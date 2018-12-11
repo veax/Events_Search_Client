@@ -111,7 +111,7 @@ class EventsList extends Component {
               <span className="card-title">{event.nom}</span>
             </div>
             <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
-            <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
+            <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2" target="_blank" >See more</Link>
           </div>
         ): null
     })

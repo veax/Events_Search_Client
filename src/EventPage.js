@@ -14,19 +14,19 @@ class EventPage extends Component{
   }
 
   render() {
-    const { event }  = this.props.location.state
-    let image
-    if (this.state.isExist){
-      image = <img src={event.media_1} alt="some event" onError={this.handleError} />
-    }
-    else {
-      image = <img src={noimagefound} alt="not found"/>
-    }
+    // const { event }  = this.props.location.state
+    // let image
+    // if (this.state.isExist){
+    //   image = <img src={event.media_1} alt="some event" onError={this.handleError} />
+    // }
+    // else {
+    //   image = <img src={noimagefound} alt="not found"/>
+    // }
     return (
       <div className="container">
         <h5>Event Data</h5>
-        <p>{event.nom}</p>
-        {image}
+        {/* <p>{event.nom}</p>
+        {image} */}
       </div>
     )
   }
