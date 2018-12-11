@@ -67,16 +67,14 @@ export default class EventPage extends Component
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="comment_section col s7">
+          <div className="row comment_block">
+            <div className="comment_section col s6">
               <h5>Comments: </h5>
                 <ul className="collection">
-
                   <li class="collection-item avatar">
                     <img src={user_icon} alt="" class="circle" />
                     <span class="title">Username</span>
                     <p>First Line </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                     <div className="divider"></div>
                     <li className="collection_item comment">User Comment</li>
                   </li>
@@ -97,6 +95,11 @@ export default class EventPage extends Component
                     <li className="collection_item comment">User Comment</li>
                   </li>
                 </ul>
+            </div>
+            <div className="col s6">
+              <label for="textarea1">Write your thoughts about it...</label>
+              <textarea id="textarea1" class="materialize-textarea"></textarea>
+              <a class="waves-effect waves-light btn add_comment_btn">add new comment</a>
             </div>
           </div>
           
