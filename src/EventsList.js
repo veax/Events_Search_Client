@@ -90,9 +90,9 @@ class EventsList extends Component {
     }
 
     // -----DEBUG events key repetition
-    filteredEvents.forEach(event => {
-      console.log(event.recordid)
-    })
+    // filteredEvents.forEach(event => {
+    //   console.log(event.recordid)
+    // })
     console.log(filteredEvents.length)
 
     let eventsList = filteredEvents.map(event => {
@@ -104,16 +104,16 @@ class EventsList extends Component {
         image = <div className="event-img" style={{backgroundImage:`url(${noimagefound})`}}></div>
       }
 
-        return filteredEvents.length > 0 ? (
-          <div key={event.recordid} className="card hoverable event">
-            <div className="card-image">
-              {image}
-              <span className="card-title">{event.nom}</span>
-            </div>
-            <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
-            <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
+      return filteredEvents.length > 0 ? (
+        <div key={event.recordid} className="card hoverable event">
+          <div className="card-image">
+            {image}
+            <span className="card-title">{event.nom}</span>
           </div>
-        ): null
+          <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
+          <Link to={{pathname: '/events/' + event.recordid, state: {event: event} }} className="waves-effect waves-light btn-small deep-purple accent-2">See more</Link>
+        </div>
+      ): null
     })
     return (
       <div className="container">

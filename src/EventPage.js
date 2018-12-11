@@ -15,12 +15,14 @@ export default class EventPage extends Component
 {
 	state = {
     event: {},
-    isExist: true
+    comments: [], // list of comments for this event
+    newComment: '',
+    isImageExist: true,
   }
   
-  handleError = (e) => {
+  handleImageError = (e) => {
     this.setState({
-      isExist: false
+      isImageExist: false
     })
   }
 
@@ -28,7 +30,7 @@ export default class EventPage extends Component
 	{
     if( this.props.location.state )
 			this.setState({
-        event: this.props.location.state.event
+        event: this.props.location.state.event,
       })
     else {
       fetchEvent( this.props.match.params.event_id )
@@ -37,17 +39,57 @@ export default class EventPage extends Component
   }
   
 
-  handleStarChange = () => {
+  handleStarClick = (e) => {
+    for (let i = 0; i <= e.target.id; i++){
+      let star = document.getElementById(i)
+      star.style.color = "#ffca28"
+    }
+    if (e.target.id < 4){
+      let next = parseInt(e.target.id) + 1
+      for (let i = next; i <= 4; i++ ){
+        let star = document.getElementById(i)
+        star.style.color = "#000"
+      }
+    }
+  }
 
+  handleTextChange = (e) => {
+    this.setState({
+      newComment: e.target.value
+    })
+  }
+
+  handleAddComment = (e) => {
+
+    e.preventDefault()
+    let text = document.getElementById('textarea1').value;
+    let id = this.props.match.params.event_id
+    console.log(text)
+    console.log(id)
+    fetch('http://localhost:8080/commentaire/ajout', {
+            method: 'POST',
+            headers: new Headers(),
+            body: JSON.stringify({message:text, idEvent: id})
+        }).then((res) => res.json())
+        .then((data) =>  {
+            console.log(data)
+            this.setState({
+              comments: data
+            })
+        })
+        .catch((err)=>console.log(err))
+        .then(() => {
+            
+        })
   }
 
 
 	render()
 	{
-		const { event } = this.state;
+		const { event, comments } = this.state;
     let image
-    if (this.state.isExist){
-      image = <img src={event.media_1} alt="some event" onError={this.handleError} />
+    if (this.state.isImageExist){
+      image = <img src={event.media_1} alt="some event" onError={this.handleImageError} />
     }
     else {
       image = <img src={noimagefound} alt="not found"/>
@@ -56,10 +98,22 @@ export default class EventPage extends Component
     const stars = () => {
       let stars_array = []
       for (let i = 0; i < 5; i++){
-        stars_array.push(<i key={i} onChange={this.handleStarChange} className="material-icons small">grade</i>)
+        stars_array.push(<i key={i} id={i} onClick={this.handleStarClick} className="material-icons small">grade</i>)
       }
       return stars_array
     }
+
+    let commentsList = comments.map((comment, i) => {
+      return (
+        <li className="collection-item avatar" key={i}>
+          <img src={user_icon} alt="" className="circle" />
+          {/* <span className="title">Username</span>
+          <p>First Line </p>
+          <div className="divider"></div>
+          <div className="collection_item comment">User Comment</div> */}
+        </li>
+      )
+    })
 
 		return (
       <div className="container">
@@ -81,35 +135,13 @@ export default class EventPage extends Component
             <div className="comment_section col s6">
               <h5>Comments: </h5>
                 <ul className="collection">
-                  <li className="collection-item avatar">
-                    <img src={user_icon} alt="" className="circle" />
-                    <span className="title">Username</span>
-                    <p>First Line </p>
-                    <div className="divider"></div>
-                    <div className="collection_item comment">User Comment</div>
-                  </li>
-                  <li className="collection-item avatar">
-                    <img src={user_icon} alt="" className="circle" />
-                    <span className="title">Username</span>
-                    <p>First Line </p>
-                    <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
-                    <div className="divider"></div>
-                    <div className="collection_item comment">User Comment</div>
-                  </li>
-                  <li className="collection-item avatar">
-                    <img src={user_icon} alt="" className="circle" />
-                    <span className="title">Username</span>
-                    <p>First Line </p>
-                    <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
-                    <div className="divider"></div>
-                    <div className="collection_item comment">User Comment</div>
-                  </li>
+                  { commentsList }
                 </ul>
             </div>
             <div className="col s6">
               <label htmlFor="textarea1">Write your thoughts about it...</label>
-              <textarea id="textarea1" className="materialize-textarea" placeholder="leave your honest opinion"></textarea>
-              <a className="waves-effect waves-light btn add_comment_btn">add new comment</a>
+              <textarea onChange={this.handleTextChange} value={this.state.newComment} id="textarea1" className="materialize-textarea" placeholder="leave your honest opinion"></textarea>
+              <button onClick = {this.handleAddComment}className="waves-effect waves-light btn add_comment_btn">add new comment</button> 
             </div>
           </div> 
         </div>   

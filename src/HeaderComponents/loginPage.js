@@ -61,6 +61,7 @@ class loginPage extends Component {
                 body:JSON.stringify({login:user, password:password})
             }).then((res) => res.json())
             .then((data) =>  {
+                console.log(data)
                 this.props.location.handleConnection(data)
             })
             .catch((err)=>console.log(err))
