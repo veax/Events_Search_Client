@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { exctractEventsData, types, dates } from './helperFunctions/exctractEventsData'
+import noimagefound from './assets/noimagefound.png'
 
 class EventsList extends Component {
   state = {
     events: [],
-    isLoading: true
+    isLoading: true,
+    isImageExist: true
   }
 
   componentDidMount(){
@@ -44,6 +46,12 @@ class EventsList extends Component {
       })
       .catch((err)=>console.log(err))
     }
+  }
+
+  handleError = (e) => {
+    this.setState({
+      isImageExist: false
+    })
   }
 
   
@@ -88,10 +96,18 @@ class EventsList extends Component {
     // console.log(filteredEvents.length)
 
     let eventsList = filteredEvents.map(event => {
+      let image
+      if (this.state.isImageExist){
+        image = <div className="event-img" style={{backgroundImage:`url(${event.media_1})`}} onError={this.handleError}></div>
+      }
+      else {
+        image = <div className="event-img" style={{backgroundImage:`url(${noimagefound})`}}></div>
+      }
+
         return filteredEvents.length > 0 ? (
           <div key={event.recordid} className="card hoverable event">
             <div className="card-image">
-              <div className="event-img" style={{backgroundImage:`url(${event.media_1})`}}></div>
+              {image}
               <span className="card-title">{event.nom}</span>
             </div>
             <div className="card-content">{`${event.description.substring(0,150)}... `}</div>
