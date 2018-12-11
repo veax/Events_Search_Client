@@ -13,42 +13,46 @@ const fetchEvent = async id =>
 export default class EventPage extends Component
 {
 	state = {
-    event: {},
-    isExist: true
-  }
-  
-  handleError = (e) => {
-    this.setState({
-      isExist: false
-    })
-  }
+		event: {},
+		isExist: true
+	}
+
+	handleError = ( e ) =>
+	{
+		this.setState( {
+			isExist: false
+		} )
+	}
 
 	componentDidMount()
 	{
-    if( this.props.location.state )
-			this.setState({
-        event: this.props.location.state.event
-      })
-    else {
-      fetchEvent( this.props.match.params.event_id )
-			.then( event => this.setState( { event } ) )
-    }
+		if( this.props.location.state )
+			this.setState( {
+				event: this.props.location.state.event
+			} )
+		else
+		{
+			fetchEvent( this.props.match.params.event_id )
+				.then( event => this.setState( { event } ) )
+		}
 	}
 
 	render()
 	{
 		const { event } = this.state;
-    let image
-    if (this.state.isExist){
-      image = <img src={event.media_1} alt="some event" onError={this.handleError} />
-    }
-    else {
-      image = <img src={noimagefound} alt="not found"/>
-    }
+		let image
+		if( this.state.isExist )
+		{
+			image = <img src={ event.media_1 } alt="some event" onError={ this.handleError } />
+		}
+		else
+		{
+			image = <img src={ noimagefound } alt="not found" />
+		}
 		return <div className="container">
 			<h5>Event Data</h5>
 			<p>{ event.nom }</p>
-			{image}
+			{ image }
 		</div>
 	}
 }
