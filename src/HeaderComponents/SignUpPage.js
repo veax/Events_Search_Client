@@ -52,16 +52,19 @@ class SignUpPage extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        let headers = new Headers();
+
+        headers.set( "Content-Type", "application/json" );
         let user = document.getElementById('userid').value;
         let password = document.getElementById('password').value;
 
         fetch('http://localhost:8080/inscription', {
                 method: 'POST',
-                headers : new Headers(),
+                headers,
                 body:JSON.stringify({login:user, password:password})
             }).then((res) => res.json())
             .then((data) =>  {
-                console.log(data)
+                // console.log(data)   // debugging
             })
             .catch((err)=>console.log(err))
             .then(() => {

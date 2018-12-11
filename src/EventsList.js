@@ -93,7 +93,7 @@ class EventsList extends Component {
     // filteredEvents.forEach(event => {
     //   console.log(event.recordid)
     // })
-    console.log(filteredEvents.length)
+    // console.log(filteredEvents.length)
 
     let eventsList = filteredEvents.map(event => {
       let image

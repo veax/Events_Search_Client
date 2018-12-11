@@ -2,20 +2,36 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import SignedInLinks from './SignedInLinks'
 import SignedOutLinks from './SignedOutLinks'
+import { loadState, saveState } from '../helperFunctions/localStorage'
+
+const persistedLoad = loadState()
 
 class Navbar extends Component {
   state = {
-    isConnected: false
+    persistedState: persistedLoad
   }
 
   handleConnection = (res) => {
-      console.log(res) // for debug
-      this.setState({
-        isConnected: res.success
-      })
+      if (!res.success){
+        console.log('failed to login')
+        sessionStorage.clear()
+        this.setState({
+          persistedState: null
+        })
+      }
+      else {
+        console.log('logged in successfully!')
+        saveState(res) // using sessionStorage
+        this.setState({
+          persistedState: loadState()
+        })
+      }
+      
   }
   render(){
-    const links = this.state.isConnected ? <SignedOutLinks handleConnection={this.handleConnection}/> : <SignedInLinks handleConnection={this.handleConnection}/> 
+    const { persistedState } = this.state
+    console.log(persistedState)
+    const links = persistedState && persistedState.success ? <SignedOutLinks handleConnection={this.handleConnection} login={persistedState.idUser}/> : <SignedInLinks handleConnection={this.handleConnection}/> 
     return (
       <div className="App-header">
         <div className="container">

@@ -64,12 +64,13 @@ export default class EventPage extends Component
     e.preventDefault()
     let text = document.getElementById('textarea1').value;
     let id = this.props.match.params.event_id
+    let user = ''
     console.log(text)
     console.log(id)
     fetch('http://localhost:8080/commentaire/ajout', {
             method: 'POST',
             headers: new Headers(),
-            body: JSON.stringify({message:text, idEvent: id})
+            body: JSON.stringify({message:text, idEvent: id, user})
         }).then((res) => res.json())
         .then((data) =>  {
             console.log(data)
@@ -86,9 +87,9 @@ export default class EventPage extends Component
 
 	render()
 	{
-		const { event, comments } = this.state;
+		const { event, comments, isImageExist } = this.state;
     let image
-    if (this.state.isImageExist){
+    if (isImageExist){
       image = <img src={event.media_1} alt="some event" onError={this.handleImageError} />
     }
     else {
