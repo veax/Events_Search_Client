@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import noimagefound from './assets/noimagefound.png'
 import user_icon from './assets/user_icon.jpg'
-import { loadState } from './helperFunctions/sessionStorage'
+import { loadState, saveState } from './helperFunctions/sessionStorage'
 
 let persistedLoad = null
 let user = null
@@ -24,7 +24,8 @@ export default class EventPage extends Component
     newComment: '',
     starNote: '',
     isMarked: false,
-    isImageExist: true
+    isImageExist: true,
+    averageNote: ''
   }
 
   // loading event data and comments for this event
@@ -46,7 +47,16 @@ export default class EventPage extends Component
         comments: data
       })
     }
+    const fetchAverageNote = async () => {
+      const response = await fetch(`http://localhost:8080/evaluation/getByEvent/${this.props.match.params.event_id}`)
+      const data = await response.json()
+      this.setState({
+        averageNote: data
+      })
+    }
+
     fetchEvents()
+    fetchAverageNote()
   }
 
 
@@ -66,7 +76,16 @@ export default class EventPage extends Component
         })
       .then((res) => res.json())
       .then((data) =>  {
-          console.log(data)
+          let bookmarks
+          user = loadState()
+          console.log(user)
+          if (user.bookmarks.length <= 2){
+            user.bookmarks = "["+id+"]"
+          }
+          else {
+            bookmarks = user.bookmarks.substring(0, user.bookmarks.length-1)+","+id+"]"
+            user.bookmarks = bookmarks
+          }
       })
       .catch((err)=>console.log(err))
     }
@@ -159,7 +178,7 @@ export default class EventPage extends Component
 	render()
 	{
     persistedLoad = loadState()
-    user = sessionStorage.length > 0 ? persistedLoad.idUser : null  // userId if connected
+    user = persistedLoad ? persistedLoad.idUser : null  // userId if connected
     let bookmark_btn = user ? <i onClick={this.handleBookMark} className="small material-icons" id="bookmark_add" >bookmark</i> : null
     const { event, comments, isImageExist } = this.state;
     console.log(user) // for debugging
@@ -195,6 +214,7 @@ export default class EventPage extends Component
         <div className="card event_container">
           <span className="card-title">{ event.nom }</span>
           { bookmark_btn }
+          { this.state.averageNote }
           <blockquote>{ event.description }</blockquote>
           <div className="row">
             <div className="col m12 l6">

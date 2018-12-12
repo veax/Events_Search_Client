@@ -11,6 +11,7 @@ export class HomePage extends Component {
         eventsDates: [],
         search: []
     };
+
     handleSelectedTypes = (eventType, eventDate) => {
         this.setState( () => ({
             eventsTypes: eventType,

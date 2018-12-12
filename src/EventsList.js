@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { exctractEventsData, types, dates } from './helperFunctions/exctractEventsData'
+import { loadState } from './helperFunctions/sessionStorage'
 import noimagefound from './assets/noimagefound.png'
+
+let persistedLoad = null
 
 class EventsList extends Component {
   state = {
@@ -11,8 +14,13 @@ class EventsList extends Component {
   }
 
   componentDidMount(){
+    let path = null
+    if (this.props.match){
+      path = this.props.match.path
+    }
     this.setState({
-      isLoading: true
+      isLoading: true,
+      path
     });
     const fetchEvents = async () => {
       const response = await fetch('http://localhost:8080/evenement/all')
@@ -21,8 +29,10 @@ class EventsList extends Component {
         events: data,
         isLoading: false
       })
-      exctractEventsData(data)
-      this.props.handleSelectedTypes(types, dates)
+      if (!this.props.match){
+        exctractEventsData(data)
+        this.props.handleSelectedTypes(types, dates)
+      } 
     }
     fetchEvents()
   }
@@ -56,6 +66,7 @@ class EventsList extends Component {
 
   
   render() {
+    // console.log(this.state.events)
     const { events, isLoading } = this.state
     const { filter, search } = this.props
     let filteredEvents, type
@@ -70,7 +81,19 @@ class EventsList extends Component {
       )
     }
 
-    if (filter === 'text'){
+    // for bookmarks
+    persistedLoad = loadState()
+    if (sessionStorage.length > 0 && this.state.path){
+      let bookmarks = persistedLoad.bookmarks
+      // console.log(bookmarks)
+      filteredEvents = null
+      filteredEvents = events.filter (
+        (event) => {
+          return bookmarks.includes(event.recordid)
+        }
+      )
+    }
+    else if (filter === 'text'){
       filteredEvents = events.filter(
         (event) => {
           return event.nom.toLowerCase().indexOf(search.toLowerCase()) !== -1;
@@ -88,7 +111,7 @@ class EventsList extends Component {
         }
       )
     }
-
+    // console.log(filteredEvents)
     // -----DEBUG events key repetition
     // filteredEvents.forEach(event => {
     //   console.log(event.recordid)
