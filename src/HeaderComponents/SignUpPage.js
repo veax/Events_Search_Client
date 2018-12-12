@@ -58,7 +58,7 @@ class SignUpPage extends Component {
         let user = document.getElementById('userid').value;
         let password = document.getElementById('password').value;
 
-        fetch('http://localhost:8080/inscription', {
+        fetch('http://localhost:8080/user/register', {
                 method: 'POST',
                 headers,
                 body:JSON.stringify({login:user, password:password})

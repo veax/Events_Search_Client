@@ -6,7 +6,7 @@ class SignedOutLinks extends Component {
     handleConnection = () => {
         let headers = new Headers();
         headers.set( "Content-Type", "application/json" );
-        fetch('http://localhost:8080/deconnexion', {
+        fetch('http://localhost:8080/user/signout', {
                 method: 'POST',
                 headers,
                 body:JSON.stringify({login: this.props.login})

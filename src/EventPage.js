@@ -39,7 +39,7 @@ export default class EventPage extends Component
     }
 
     const fetchEvents = async () => {
-      const response = await fetch(`http://localhost:8080/commentaire/${this.props.match.params.event_id}`)
+      const response = await fetch(`http://localhost:8080/commentary/getByEvent/${this.props.match.params.event_id}`)
       const data = await response.json()
       this.setState({
         comments: data
@@ -74,10 +74,11 @@ export default class EventPage extends Component
 
   handleAddNote = (e) => {
     console.log(this.state.starNote)
-    fetch('http://localhost:8080/star/add', {
+    let id = this.props.match.params.event_id
+    fetch('http://localhost:8080/evenement/rate', {
       method: 'POST',
       headers,
-      body:JSON.stringify({idUser: user, note: this.state.starNote})
+      body:JSON.stringify({recordid: id, userid: user, score: this.state.starNote})
     })
     .then((res) => res.json())
     .then((data) =>  {
@@ -100,10 +101,10 @@ export default class EventPage extends Component
     console.log(text)
     console.log(id)
     console.log(user)
-    fetch('http://localhost:8080/commentaire/ajout', {
+    fetch('http://localhost:8080/commentary/add', {
       method: 'POST',
       headers,
-      body: JSON.stringify({message: text, idEvent: id, idUser: user})
+      body: JSON.stringify({message: text, eventid: id, userid: user})
     }).then((res) => res.json())
     .then((data) =>  {
         console.log(data)

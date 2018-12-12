@@ -15,7 +15,7 @@ class EventsList extends Component {
       isLoading: true
     });
     const fetchEvents = async () => {
-      const response = await fetch('http://localhost:8080/evenement/tous')
+      const response = await fetch('http://localhost:8080/evenement/all')
       const data = await response.json()
       this.setState({
         events: data,
@@ -33,7 +33,7 @@ class EventsList extends Component {
       const lat = search[0]
       const long = search[1]
       const rad = search[2]
-      fetch('http://localhost:8080/eventsByLocation', {
+      fetch('http://localhost:8080/evenement/byLocation', {
         method: 'POST',
         headers : new Headers(),
         body:JSON.stringify({latitude: lat, longitude: long, radius: rad})
