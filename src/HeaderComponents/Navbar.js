@@ -33,11 +33,13 @@ class Navbar extends Component {
       <div className="App-header">
         <div className="container">
             <div className="header-panel">
+              <div className="home-panel">
                 <Link to = '/' id = "titleHomeLink">Events Search App</Link>
                 { bookmarks }
-                <div className="buttons-panel">
-                  { links }
-                </div>
+              </div>
+              <div className="buttons-panel">
+                { links }
+              </div>
             </div>
             <div className="divider"></ div>
         </div>

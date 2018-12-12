@@ -20,12 +20,20 @@
 .App-link
   color: #61dafb
 
+.img-responsive
+  max-width: 100%
+  height: auto
+  margin-bottom: 40px
+
 .header-panel
   margin-top: 50px
   margin-bottom: 5px
   display: flex
   justify-content: space-between
   align-items: center
+  .home-panel
+    display: flex
+    flex-direction: column
 
 #titleHomeLink
   margin-top: 0
@@ -135,15 +143,14 @@ select
   .post_star_btn
     margin-bottom: 60px
   .parking-title-btn
-    display: inline-block
+    display: block
     vertical-align: top
     margin-bottom: 20px
   i.car-icon
     margin-top: 5px
-    margin-left: 20px
+    display: block
 
   .comment_block
-    margin-top: 75px
     textarea
       margin-top: 45px
       padding-left: 1rem
@@ -173,7 +180,7 @@ select
             font-weight: bold
         .comment
           margin-top: 10px
-          padding: 10px 0 10px
+          padding: 10px
 
 //  MEDIA QUERIES
 
@@ -185,6 +192,13 @@ select
   .buttons-panel a
     height: 45px
     line-height: 45px
+  .user_actions_group
+    float: none!important
+  // .event_container
+  //   .stars_container
+  //     margin-top: 30px
+  .comment_block
+    margin-top: 45px
 
 @media screen and (max-width: 35em)
   .EventsList
