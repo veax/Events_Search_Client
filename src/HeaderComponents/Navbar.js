@@ -27,6 +27,7 @@ class Navbar extends Component {
   }
   render(){
     const { persistedState } = this.state
+    console.log(persistedState)
     const links = persistedState && persistedState.success ? <SignedOutLinks handleConnection={this.handleConnection} login={persistedState.idUser}/> : <SignedInLinks handleConnection={this.handleConnection}/> 
     return (
       <div className="App-header">

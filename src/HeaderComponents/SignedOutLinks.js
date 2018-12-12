@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 class SignedOutLinks extends Component {
 
     handleConnection = () => {
+        console.log(this.props.login)
         let headers = new Headers();
         headers.set( "Content-Type", "application/json" );
         fetch('http://localhost:8080/user/signout', {
@@ -13,7 +14,7 @@ class SignedOutLinks extends Component {
         })
         .then((res) => res.json())
         .then((data) =>  {
-            console.log(data)
+            // console.log(data)
             this.props.handleConnection({success: false})
         })
         .catch((err)=>console.log(err))

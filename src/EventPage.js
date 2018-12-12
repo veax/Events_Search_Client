@@ -104,13 +104,14 @@ export default class EventPage extends Component
     fetch('http://localhost:8080/commentary/add', {
       method: 'POST',
       headers,
-      body: JSON.stringify({message: text, eventid: id, userid: user})
+      body: JSON.stringify({message: text, idUser: user, idEvent: id})
     }).then((res) => res.json())
     .then((data) =>  {
         console.log(data)
-        // this.setState({
-        //   comments: push new created comment
-        // })
+        let newComment = {idUser: user, message: text}
+        this.setState({
+          comments: [...this.state.comments, newComment]
+        })
     })
     .catch((err)=>console.log(err))
     
@@ -143,10 +144,9 @@ export default class EventPage extends Component
       return (
         <li className="collection-item avatar" key={i}>
           <img src={user_icon} alt="" className="circle" />
-          {/* <span className="title">Username</span>
-          <p>First Line </p>
+          <span className="title">{comment.idUser}</span>
           <div className="divider"></div>
-          <div className="collection_item comment">User Comment</div> */}
+          <div className="collection_item comment">{comment.message}</div>
         </li>
       )
     })
