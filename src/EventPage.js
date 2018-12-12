@@ -23,7 +23,7 @@ export default class EventPage extends Component
     comments: [], // list of comments for this event
     newComment: '',
     starNote: '',
-    isMarked: false,
+    isMarked: loadState().bookmarks.includes(this.props.match.params.event_id),
     isImageExist: true,
     averageNote: ''
   }
@@ -57,6 +57,14 @@ export default class EventPage extends Component
 
     fetchEvents()
     fetchAverageNote()
+
+    let mark = document.getElementById("bookmark_add")
+    if (this.state.isMarked){
+      mark.style.color = "#b71c1c"
+    }
+    else {
+      mark.style.color = "#9e9e9e"
+    }
   }
 
 
@@ -68,7 +76,6 @@ export default class EventPage extends Component
 
   handleBookMark = (e) => {
     const postFetchBookmarks = (action) => {
-      let id = this.props.match.params.event_id
       fetch(`http://localhost:8080/bookmarks/${action}`, {
         method: 'POST',
         headers,
@@ -76,35 +83,40 @@ export default class EventPage extends Component
         })
       .then((res) => res.json())
       .then((data) =>  {
-          let bookmarks
-          user = loadState()
-          console.log(user)
-          if (user.bookmarks.length <= 2){
-            user.bookmarks = "["+id+"]"
-          }
-          else {
-            bookmarks = user.bookmarks.substring(0, user.bookmarks.length-1)+","+id+"]"
-            user.bookmarks = bookmarks
-          }
+        console.log(data)
       })
       .catch((err)=>console.log(err))
     }
 
+    let bookmarks
+    user = loadState()
+    console.log(user)
     let mark = document.getElementById("bookmark_add")
-    if (!this.state.isMarked){
-      mark.style.color = "#b71c1c"
-      this.setState({
-        isMarked: true
-      })
-      postFetchBookmarks("add")
-    }
-    else {
+    let id = this.props.match.params.event_id
+
+    if (this.state.isMarked){   // remove event_id from sessionStorage
       mark.style.color = "#9e9e9e"
       this.setState({
         isMarked: false
       })
       postFetchBookmarks("remove")
+      user.bookmarks = user.bookmarks.replace(id, '')
     }
+    else {  // add event_id in sessionStorage
+      mark.style.color = "#b71c1c"
+      this.setState({
+        isMarked: true
+      })
+      postFetchBookmarks("add")
+      if (user.bookmarks.length <= 2){
+        user.bookmarks = "["+id+"]"
+      }
+      else {
+        bookmarks = user.bookmarks.substring(0, user.bookmarks.length-1)+","+id+"]"
+        user.bookmarks = bookmarks
+      }
+    }
+    saveState(user)
   }
   
   handleStarClick = (e) => {
@@ -181,7 +193,6 @@ export default class EventPage extends Component
     user = persistedLoad ? persistedLoad.idUser : null  // userId if connected
     let bookmark_btn = user ? <i onClick={this.handleBookMark} className="small material-icons" id="bookmark_add" >bookmark</i> : null
     const { event, comments, isImageExist } = this.state;
-    console.log(user) // for debugging
     let image
     if (isImageExist){
       image = <img className="img-responsive" src={event.media_1} alt="some event" onError={this.handleImageError} />

@@ -85,7 +85,7 @@ class EventsList extends Component {
     persistedLoad = loadState()
     if (sessionStorage.length > 0 && this.state.path){
       let bookmarks = persistedLoad.bookmarks
-      // console.log(bookmarks)
+      console.log(bookmarks)
       filteredEvents = null
       filteredEvents = events.filter (
         (event) => {
