@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import noimagefound from './assets/noimagefound.png'
 import user_icon from './assets/user_icon.jpg'
+import { loadState } from './helperFunctions/sessionStorage'
 
+let persistedLoad = null
+let user = null
+let headers = new Headers();
+headers.set( "Content-Type", "application/json" );
 
 const fetchEvent = async id =>
 {
@@ -17,15 +22,11 @@ export default class EventPage extends Component
     event: {},
     comments: [], // list of comments for this event
     newComment: '',
-    isImageExist: true,
-  }
-  
-  handleImageError = (e) => {
-    this.setState({
-      isImageExist: false
-    })
+    starNote: '',
+    isImageExist: true
   }
 
+  // loading event data and comments for this event
 	componentDidMount()
 	{
     if( this.props.location.state )
@@ -36,9 +37,24 @@ export default class EventPage extends Component
       fetchEvent( this.props.match.params.event_id )
 			.then( event => this.setState( { event } ) )
     }
+
+    const fetchEvents = async () => {
+      const response = await fetch(`http://localhost:8080/commentaire/${this.props.match.params.event_id}`)
+      const data = await response.json()
+      this.setState({
+        comments: data
+      })
+    }
+    fetchEvents()
+  }
+
+
+  handleImageError = (e) => {
+    this.setState({
+      isImageExist: false
+    })
   }
   
-
   handleStarClick = (e) => {
     for (let i = 0; i <= e.target.id; i++){
       let star = document.getElementById(i)
@@ -51,6 +67,23 @@ export default class EventPage extends Component
         star.style.color = "#000"
       }
     }
+    this.setState({
+      starNote: parseInt(e.target.id) + 1
+    })
+  }
+
+  handleAddNote = (e) => {
+    console.log(this.state.starNote)
+    fetch('http://localhost:8080/star/add', {
+      method: 'POST',
+      headers,
+      body:JSON.stringify({idUser: user, note: this.state.starNote})
+    })
+    .then((res) => res.json())
+    .then((data) =>  {
+        console.log(data)
+    })
+    .catch((err)=>console.log(err))
   }
 
   handleTextChange = (e) => {
@@ -60,34 +93,35 @@ export default class EventPage extends Component
   }
 
   handleAddComment = (e) => {
-
     e.preventDefault()
     let text = document.getElementById('textarea1').value;
     let id = this.props.match.params.event_id
-    let user = ''
+    
     console.log(text)
     console.log(id)
+    console.log(user)
     fetch('http://localhost:8080/commentaire/ajout', {
-            method: 'POST',
-            headers: new Headers(),
-            body: JSON.stringify({message:text, idEvent: id, user})
-        }).then((res) => res.json())
-        .then((data) =>  {
-            console.log(data)
-            this.setState({
-              comments: data
-            })
-        })
-        .catch((err)=>console.log(err))
-        .then(() => {
-            
-        })
+      method: 'POST',
+      headers,
+      body: JSON.stringify({message: text, idEvent: id, idUser: user})
+    }).then((res) => res.json())
+    .then((data) =>  {
+        console.log(data)
+        // this.setState({
+        //   comments: push new created comment
+        // })
+    })
+    .catch((err)=>console.log(err))
+    
   }
 
 
 	render()
 	{
-		const { event, comments, isImageExist } = this.state;
+    persistedLoad = loadState()
+    user = sessionStorage.length > 0 ? persistedLoad.idUser : null  // userId if connected
+    const { event, comments, isImageExist } = this.state;
+    console.log(user) // for debugging
     let image
     if (isImageExist){
       image = <img src={event.media_1} alt="some event" onError={this.handleImageError} />
@@ -130,6 +164,10 @@ export default class EventPage extends Component
               <div className="stars_container">
                 {stars()}
               </div>
+              <button onClick = {this.handleAddNote} disabled={!user} className="waves-effect waves-light btn post_star_btn">note event</button> <br />
+              <h6 className="parking-title-btn">Looking for parking near by this event</h6>
+              <i className="small material-icons car-icon ">directions_car</i>
+              <button onClick = {this.handleAddNote} disabled={!user} className="waves-effect waves-light btn blue darken-3">get list of parkings</button> 
             </div>
           </div>
           <div className="row comment_block">
@@ -142,7 +180,7 @@ export default class EventPage extends Component
             <div className="col s6">
               <label htmlFor="textarea1">Write your thoughts about it...</label>
               <textarea onChange={this.handleTextChange} value={this.state.newComment} id="textarea1" className="materialize-textarea" placeholder="leave your honest opinion"></textarea>
-              <button onClick = {this.handleAddComment}className="waves-effect waves-light btn add_comment_btn">add new comment</button> 
+              <button onClick = {this.handleAddComment} disabled={!user} className="waves-effect waves-light btn add_comment_btn green darken-2">add new comment</button> 
             </div>
           </div> 
         </div>   

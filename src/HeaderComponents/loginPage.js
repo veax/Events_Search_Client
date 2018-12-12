@@ -34,13 +34,13 @@ class loginPage extends Component {
             break;
         }
         this.setState({formErrors: formErrors,
-                        useridValid: useridValid,
-                        passwordValid: passwordValid
-                      }, this.validateForm);
+            useridValid: useridValid,
+            passwordValid: passwordValid
+            }, this.validateForm);
     }
     validateForm() {
-    this.setState({formValid: this.state.useridValid &&
-    this.state.passwordValid});
+        this.setState({formValid: this.state.useridValid &&
+        this.state.passwordValid});
     }
 
     handleReset = () => {
@@ -61,15 +61,13 @@ class loginPage extends Component {
                 method: 'POST',
                 headers,
                 body:JSON.stringify({login:user, password:password})
-            }).then((res) => res.json())
-            .then((data) =>  {
-                console.log(data)
-                this.props.location.handleConnection(data)
-            })
-            .catch((err)=>console.log(err))
-            .then(() => {
-                this.props.history.push('/')
-            })
+        }).then((res) => res.json())
+        .then((data) =>  {
+            console.log(data)
+            this.props.location.handleConnection(data)
+            this.props.history.push('/')
+        })
+        .catch((err)=>console.log(err))
     }
 
   render() {

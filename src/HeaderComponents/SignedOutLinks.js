@@ -20,7 +20,6 @@ class SignedOutLinks extends Component {
     }
 
     render() {
-        // console.log(this.props)
         return (
             <div>
               <Link to ="/" onClick={this.handleConnection} id="singout" className="waves-effect waves-light btn-large purple accent-4">Sign Out</Link>

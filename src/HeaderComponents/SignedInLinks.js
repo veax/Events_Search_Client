@@ -12,7 +12,7 @@ class SignedInLinks extends Component {
                 <Link to = {{pathname: '/login', handleConnection: this.handleConnection}} id = "login" className="waves-effect waves-light btn-large" >Login</Link>
                 <Link to ="/signup" id="signup" className="waves-effect waves-light btn-large purple accent-4">Sign Up</Link>
             </div>
-          )
+        )
     }
 }
 
