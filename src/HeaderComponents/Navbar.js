@@ -27,13 +27,14 @@ class Navbar extends Component {
   }
   render(){
     const { persistedState } = this.state
-    console.log(persistedState)
+    let bookmarks = persistedState && persistedState.success ? <Link to ="/user/bookmarks" id="bookmarks_btn" className="waves-effect waves-light btn-small orange accent-4">My Bookmarks</Link> : null  // userId if connected
     const links = persistedState && persistedState.success ? <SignedOutLinks handleConnection={this.handleConnection} login={persistedState.idUser}/> : <SignedInLinks handleConnection={this.handleConnection}/> 
     return (
       <div className="App-header">
         <div className="container">
             <div className="header-panel">
                 <Link to = '/' id = "titleHomeLink">Events Search App</Link>
+                { bookmarks }
                 <div className="buttons-panel">
                   { links }
                 </div>

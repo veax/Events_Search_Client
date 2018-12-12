@@ -58,9 +58,9 @@ class loginPage extends Component {
         let password = document.getElementById('password').value;
 
         fetch('http://localhost:8080/user/signin', {
-                method: 'POST',
-                headers,
-                body:JSON.stringify({login:user, password:password})
+            method: 'POST',
+            headers,
+            body:JSON.stringify({login:user, password:password})
         }).then((res) => res.json())
         .then((data) =>  {
             console.log(data)

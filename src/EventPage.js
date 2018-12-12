@@ -23,6 +23,7 @@ export default class EventPage extends Component
     comments: [], // list of comments for this event
     newComment: '',
     starNote: '',
+    isMarked: false,
     isImageExist: true
   }
 
@@ -54,6 +55,38 @@ export default class EventPage extends Component
       isImageExist: false
     })
   }
+
+  handleBookMark = (e) => {
+    const postFetchBookmarks = (action) => {
+      let id = this.props.match.params.event_id
+      fetch(`http://localhost:8080/bookmarks/${action}`, {
+        method: 'POST',
+        headers,
+        body:JSON.stringify({eventId: id, userId: user})
+        })
+      .then((res) => res.json())
+      .then((data) =>  {
+          console.log(data)
+      })
+      .catch((err)=>console.log(err))
+    }
+
+    let mark = document.getElementById("bookmark_add")
+    if (!this.state.isMarked){
+      mark.style.color = "#b71c1c"
+      this.setState({
+        isMarked: true
+      })
+      postFetchBookmarks("add")
+    }
+    else {
+      mark.style.color = "#9e9e9e"
+      this.setState({
+        isMarked: false
+      })
+      postFetchBookmarks("remove")
+    }
+  }
   
   handleStarClick = (e) => {
     for (let i = 0; i <= e.target.id; i++){
@@ -75,16 +108,20 @@ export default class EventPage extends Component
   handleAddNote = (e) => {
     console.log(this.state.starNote)
     let id = this.props.match.params.event_id
-    fetch('http://localhost:8080/evenement/rate', {
+    fetch('http://localhost:8080/evaluation/add', {
       method: 'POST',
       headers,
-      body:JSON.stringify({recordid: id, userid: user, score: this.state.starNote})
+      body:JSON.stringify({eventId: id, userId: user, evaluation: this.state.starNote})
     })
     .then((res) => res.json())
     .then((data) =>  {
         console.log(data)
     })
     .catch((err)=>console.log(err))
+  }
+
+  handleParkings = (e) => {
+    console.log(e.target)
   }
 
   handleTextChange = (e) => {
@@ -122,6 +159,7 @@ export default class EventPage extends Component
 	{
     persistedLoad = loadState()
     user = sessionStorage.length > 0 ? persistedLoad.idUser : null  // userId if connected
+    let bookmark_btn = user ? <i onClick={this.handleBookMark} className="small material-icons" id="bookmark_add" >bookmark</i> : null
     const { event, comments, isImageExist } = this.state;
     console.log(user) // for debugging
     let image
@@ -155,6 +193,7 @@ export default class EventPage extends Component
       <div className="container">
         <div className="card event_container">
           <span className="card-title">{ event.nom }</span>
+          { bookmark_btn }
           <blockquote>{ event.description }</blockquote>
           <div className="row">
             <div className="col s6">
@@ -168,7 +207,7 @@ export default class EventPage extends Component
               <button onClick = {this.handleAddNote} disabled={!user} className="waves-effect waves-light btn post_star_btn">note event</button> <br />
               <h6 className="parking-title-btn">Looking for parking near by this event</h6>
               <i className="small material-icons car-icon ">directions_car</i>
-              <button onClick = {this.handleAddNote} disabled={!user} className="waves-effect waves-light btn blue darken-3">get list of parkings</button> 
+              <button onClick = {this.handleParkings} className="waves-effect waves-light btn blue darken-3">get list of parkings</button> 
             </div>
           </div>
           <div className="row comment_block">
