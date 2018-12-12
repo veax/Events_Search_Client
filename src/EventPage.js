@@ -8,6 +8,7 @@ let user = null
 let headers = new Headers();
 headers.set( "Content-Type", "application/json" );
 
+
 const fetchEvent = async id =>
 {
 	const response = await fetch( `http://localhost:8080/evenement/${ id }` );
@@ -23,10 +24,10 @@ export default class EventPage extends Component
     comments: [], // list of comments for this event
     newComment: '',
     starNote: '',
-    isMarked: loadState().bookmarks.includes(this.props.match.params.event_id),
-    isEvaluated: false,
+    isMarked: loadState() && loadState().bookmarks.includes(this.props.match.params.event_id),
     isImageExist: true,
-    averageNote: ''
+    averageNote: '',
+    parkings: []
   }
 
   // loading event data and comments for this event
@@ -82,7 +83,6 @@ export default class EventPage extends Component
 
     let bookmarks
     user = loadState()
-    let mark = document.getElementById("bookmark_add")
     let id = this.props.match.params.event_id
 
     if (this.state.isMarked){   // remove event_id from sessionStorage
@@ -135,16 +135,20 @@ export default class EventPage extends Component
     })
     .then((res) => res.json())
     .then((data) =>  {
-        console.log(data)
-        this.setState({
-          isEvaluated: true
-        })
+        // console.log(data)
     })
     .catch((err)=>console.log(err))
   }
 
   handleParkings = (e) => {
     console.log(e.target)
+    const fetchParkings = async () => {
+      const response = await fetch(`http://localhost:8080/parking/nearby/${this.props.match.params.event_id}`)
+      const data = await response.json()
+      this.setState({
+        parkings: data
+      })
+    }
   }
 
   handleTextChange = (e) => {
@@ -181,10 +185,9 @@ export default class EventPage extends Component
 
 	render()
 	{
-    console.log(this.state.isMarked)
     persistedLoad = loadState()
     user = persistedLoad ? persistedLoad.idUser : null  // userId if connected
-    const { event, comments, isImageExist, isMarked, isEvaluated } = this.state
+    const { event, comments, isImageExist, isMarked, averageNote, parkings } = this.state
     let bookmark_btn = user ? <i onClick={this.handleBookMark} className={`small material-icons ${ isMarked ? 'red_bookmark': 'grey_bookmark'} `}  id="bookmark_add" >bookmark</i> : null
     let image
     if (isImageExist){
@@ -213,14 +216,27 @@ export default class EventPage extends Component
       )
     })
 
+    // const parkingList = parkings.map(parking => {
+    //   return (
+        
+    //   )
+    // })
+
+    // for human readable date
+    let dateObj = new Date(Date.parse(event.date))
+    let dateRead = dateObj.toDateString()
+
 		return (
       <div className="container">
         <div className="card event_container">
           <span className="card-title">{ event.nom }</span>
           { bookmark_btn }
-          { this.state.averageNote }
+          <p>Average Note: { averageNote === 0 ? 'no notes yet' : averageNote}</p>
           <blockquote>{ event.description }</blockquote>
-          <div className="row">
+          <h6 className="event-date">Date of event: { dateRead }</h6>
+          <h6 className="event-time">Time: { ` ${event.heure_debut} - ${event.heure_fin} `}</h6>
+          <h6 className="event-time">Address: {`${event.lieu} - ${event.adresse}, Nantes`}</h6>
+          <div className="row event-body">
             <div className="col m12 l6">
               {image}
             </div>
@@ -228,7 +244,7 @@ export default class EventPage extends Component
               <div className="stars_container">
                 {stars()}
               </div>
-              <button onClick = {this.handleAddNote} disabled={!user || isEvaluated } className="waves-effect waves-light btn post_star_btn">note event</button> <br />
+              <button onClick = {this.handleAddNote} disabled={!user} className="waves-effect waves-light btn post_star_btn">note event</button> <br />
               <i className="small material-icons car-icon ">directions_car</i>
               <h6 className="parking-title-btn">Looking for parking near by this event</h6>
               <button onClick = {this.handleParkings} className="waves-effect waves-light btn blue darken-3">get list of parkings</button> 
@@ -238,7 +254,7 @@ export default class EventPage extends Component
             <div className="comment_section col s12 m6">
               <h5>Comments: </h5>
                 <ul className="collection">
-                  { commentsList }
+                  { commentsList.length > 0 ? commentsList : 'No comments yet. Become first!' }
                 </ul>
             </div>
             <div className="col s12 m6">
