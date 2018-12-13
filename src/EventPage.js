@@ -27,7 +27,7 @@ export default class EventPage extends Component
     isMarked: loadState() && loadState().bookmarks.includes(this.props.match.params.event_id),
     isImageExist: true,
     averageNote: '',
-    parkings: []
+    parkings: [] 
   }
 
   // loading event data and comments for this event
@@ -85,14 +85,14 @@ export default class EventPage extends Component
     user = loadState()
     let id = this.props.match.params.event_id
 
-    if (this.state.isMarked){   // remove event_id from sessionStorage
+    if (this.state.isMarked){   // remove event_id from sessionStorage and fetch in bd
       this.setState({
         isMarked: false
       })
       postFetchBookmarks("remove")
       user.bookmarks = user.bookmarks.replace(id, '')
     }
-    else {  // add event_id in sessionStorage
+    else {  // add event_id in sessionStorage and fetch in bd
       this.setState({
         isMarked: true
       })
@@ -126,7 +126,6 @@ export default class EventPage extends Component
   }
 
   handleAddNote = (e) => {
-    console.log(this.state.starNote)
     let id = this.props.match.params.event_id
     fetch('http://localhost:8080/evaluation/add', {
       method: 'POST',
@@ -140,15 +139,16 @@ export default class EventPage extends Component
     .catch((err)=>console.log(err))
   }
 
+  // server method for parkings not working yet
   handleParkings = (e) => {
     console.log(e.target)
-    const fetchParkings = async () => {
-      const response = await fetch(`http://localhost:8080/parking/nearby/${this.props.match.params.event_id}`)
-      const data = await response.json()
-      this.setState({
-        parkings: data
-      })
-    }
+    // const fetchParkings = async () => {
+    //   const response = await fetch(`http://localhost:8080/parking/nearby/${this.props.match.params.event_id}`)
+    //   const data = await response.json()
+    //   this.setState({
+    //     parkings: data
+    //   })
+    // }
   }
 
   handleTextChange = (e) => {
@@ -161,17 +161,14 @@ export default class EventPage extends Component
     e.preventDefault()
     let { newComment } = this.state
     let id = this.props.match.params.event_id
-    
-    console.log(newComment)
-    console.log(id)
-    console.log(user)
+
     fetch('http://localhost:8080/commentary/add', {
       method: 'POST',
       headers,
       body: JSON.stringify({message: newComment, idUser: user, idEvent: id})
     }).then((res) => res.json())
     .then((data) =>  {
-        console.log(data)
+        // console.log(data)
         let addComment = {idUser: user, message: newComment}
         this.setState({
           comments: [...this.state.comments, addComment],
@@ -179,7 +176,6 @@ export default class EventPage extends Component
         })
     })
     .catch((err)=>console.log(err))
-    
   }
 
 
@@ -187,7 +183,7 @@ export default class EventPage extends Component
 	{
     persistedLoad = loadState()
     user = persistedLoad ? persistedLoad.idUser : null  // userId if connected
-    const { event, comments, isImageExist, isMarked, averageNote, parkings } = this.state
+    const { event, comments, isImageExist, isMarked, averageNote } = this.state
     let bookmark_btn = user ? <i onClick={this.handleBookMark} className={`small material-icons ${ isMarked ? 'red_bookmark': 'grey_bookmark'} `}  id="bookmark_add" >bookmark</i> : null
     let image
     if (isImageExist){
@@ -215,12 +211,6 @@ export default class EventPage extends Component
         </li>
       )
     })
-
-    // const parkingList = parkings.map(parking => {
-    //   return (
-        
-    //   )
-    // })
 
     // for human readable date
     let dateObj = new Date(Date.parse(event.date))

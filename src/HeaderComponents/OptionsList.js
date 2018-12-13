@@ -47,7 +47,7 @@ class OptionsList extends Component {
 
     render() {
         const { selectedOption } = this.props
-        const events = this.props[this.props.selectedOption]
+        const events = this.props[selectedOption]
         if (selectedOption !== 'location'){
             const list = events.map(option => {
                 return (

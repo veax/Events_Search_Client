@@ -14,7 +14,7 @@ class EventsList extends Component {
   }
 
   componentDidMount(){
-    let path = null
+    let path = null   // to distinguish routes '/' et '/user/bookmarks' using the same component
     if (this.props.match){
       path = this.props.match.path
     }
@@ -49,7 +49,7 @@ class EventsList extends Component {
         body:JSON.stringify({latitude: lat, longitude: long, radius: rad})
       }).then((res) => res.json())
       .then((data) =>  {
-        console.log(data)
+        // console.log(data)
         this.setState({
             events: data
         })
@@ -66,7 +66,6 @@ class EventsList extends Component {
 
   
   render() {
-    // console.log(this.state.events)
     const { events, isLoading } = this.state
     const { filter, search } = this.props
     let filteredEvents, type
@@ -110,12 +109,6 @@ class EventsList extends Component {
         }
       )
     }
-    // console.log(filteredEvents)
-    // -----DEBUG events key repetition
-    // filteredEvents.forEach(event => {
-    //   console.log(event.recordid)
-    // })
-    // console.log(filteredEvents.length)
 
     let eventsList = filteredEvents.map(event => {
       let image
@@ -125,7 +118,6 @@ class EventsList extends Component {
       else {
         image = <div className="event-img" style={{backgroundImage:`url(${noimagefound})`}}></div>
       }
-
       return filteredEvents.length > 0 ? (
         <div key={event.recordid} className="card hoverable event">
           <div className="card-image">
@@ -137,6 +129,7 @@ class EventsList extends Component {
         </div>
       ): null
     })
+
     return (
       <div className="container">
         <div className="EventsList">
